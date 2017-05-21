@@ -1,0 +1,50 @@
+/* package whatever; // don't place package name! */
+
+import java.util.*;
+import java.lang.*;
+import java.io.*;
+import java.util.regex.*;
+
+/* Name of the class has to be "Main" only if the class is public. */
+class Run-LengthEncoding
+{
+	public static String encode(String source) {
+        StringBuffer dest = new StringBuffer();
+        for (int i = 0; i < source.length(); i++) {
+            int runLength = 1;
+            while (i+1 < source.length() && source.charAt(i) == source.charAt(i+1)) {
+                runLength++;
+                i++;
+            }
+            dest.append(runLength);
+            dest.append(source.charAt(i));
+        }
+        return dest.toString();
+    }
+ 
+    public static String decode(String source) {
+    	if(source == null || source.equals("")) return "";
+        StringBuffer dest = new StringBuffer();
+        Pattern pattern = Pattern.compile("([0-9]+[a-zA-Z])+");
+        Matcher matcher = pattern.matcher(source);
+        boolean b = matcher.matches();
+        if(!b) return "invalid input";
+        pattern = Pattern.compile("[0-9]+|[a-zA-Z]");
+        matcher = pattern.matcher(source);
+        while (matcher.find()) {
+            int number = Integer.parseInt(matcher.group());
+            matcher.find();
+            while (number-- != 0) {
+                dest.append(matcher.group());
+            }
+        }
+        return dest.toString();
+    }
+ 
+    public static void main(String[] args) {
+        String example = "WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW";
+        System.out.println(encode(example));
+        System.out.println(decode("2345T23F3Y333s"));
+        System.out.println("shubham");
+    }
+}
